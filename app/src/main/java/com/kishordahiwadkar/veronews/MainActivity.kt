@@ -1,19 +1,12 @@
 package com.kishordahiwadkar.veronews
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -29,10 +22,8 @@ class MainActivity : AppCompatActivity() {
      */
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
-    private lateinit var firebaseAuth: FirebaseAuth
-
     companion object {
-        var api_key : String? = null
+        var apiKey: String? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,43 +33,14 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-
-        firebaseAuth = FirebaseAuth.getInstance()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val currentUser = firebaseAuth.currentUser
-        if (currentUser != null) {
-            readApiKey()
-        } else {
-            signInAnonymously()
-        }
-    }
-
-    private fun readApiKey() {
-        val database = FirebaseDatabase.getInstance()
-        val apiKeyRef = database.getReference("api_key")
-
-        apiKeyRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val value = dataSnapshot.getValue(String::class.java)
-                Log.d("MainActivity", "Value is: " + value!!)
-                api_key = value
-                showNews()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w("MainActivity", "Failed to read value.", error.toException())
-                Snackbar.make(main_content, "Error : " + error.message, Snackbar.LENGTH_LONG).show()
-            }
+        val mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
+        mainActivityViewModel.apiKey.observe(this, Observer { _ ->
+            showNews(mainActivityViewModel.apiKey.value)
         })
     }
 
-    private fun showNews() {
+    private fun showNews(value: String?) {
+        apiKey = value
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, getNewsCategories(), getCategoryTitles())
 
         // Set up the ViewPager with the sections adapter.
@@ -87,20 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
-    }
-
-    private fun signInAnonymously() {
-        firebaseAuth.signInAnonymously()
-                .addOnCompleteListener(this, OnCompleteListener<AuthResult> { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        val user = firebaseAuth.currentUser
-                        readApiKey()
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Snackbar.make(main_content, "Authentication failed", Snackbar.LENGTH_LONG).show()
-                    }
-                })
     }
 
     private fun getNewsCategories(): ArrayList<ArticlesFragment> {
