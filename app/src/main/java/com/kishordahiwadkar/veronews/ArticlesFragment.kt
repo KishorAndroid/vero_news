@@ -1,5 +1,7 @@
 package com.kishordahiwadkar.veronews
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -30,5 +32,10 @@ class ArticlesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val articlesFragmentViewModel = ViewModelProviders.of(this).get(ArticlesFragmentViewModel::class.java)
+        articlesFragmentViewModel.result.observe(this, Observer {
+
+        })
+        articlesFragmentViewModel.getNewsArticles(category)
     }
 }

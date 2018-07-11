@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel.apiKey.observe(this, Observer { _ ->
             showNews(mainActivityViewModel.apiKey.value)
         })
+        mainActivityViewModel.errorMessage.observe(this, Observer {
+
+        })
     }
 
     private fun showNews(value: String?) {

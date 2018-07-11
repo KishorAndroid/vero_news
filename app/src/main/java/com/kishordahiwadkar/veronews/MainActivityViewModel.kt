@@ -14,6 +14,7 @@ class MainActivityViewModel() : ViewModel() {
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     var apiKey: MutableLiveData<String> = MutableLiveData()
+    var errorMessage: MutableLiveData<String> = MutableLiveData()
 
     init {
         val currentUser = firebaseAuth.currentUser
@@ -40,6 +41,7 @@ class MainActivityViewModel() : ViewModel() {
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
                 Log.w("MainActivity", "Failed to read value.", error.toException())
+                errorMessage.value = error.message
             }
         })
     }
@@ -52,6 +54,7 @@ class MainActivityViewModel() : ViewModel() {
                 readApiKey()
             } else {
                 // If sign in fails, display a message to the user.
+                errorMessage.value = "Authentication Failed"
             }
         }
     }
