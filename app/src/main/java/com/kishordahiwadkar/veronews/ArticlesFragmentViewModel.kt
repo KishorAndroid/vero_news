@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 
 class ArticlesFragmentViewModel : ViewModel() {
 
-    var result: MutableLiveData<List<Result>> = MutableLiveData()
+    var result: MutableLiveData<Result> = MutableLiveData()
 
     private var disposable: Disposable? = null
 
@@ -28,6 +28,7 @@ class ArticlesFragmentViewModel : ViewModel() {
                     for (article in it.articles!!) {
                         Log.d("Article", article?.title)
                     }
+                    result.value = it
                 }, {
                     Log.d("Article", it.message)
                 })

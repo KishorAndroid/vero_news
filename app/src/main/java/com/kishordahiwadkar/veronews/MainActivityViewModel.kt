@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class MainActivityViewModel() : ViewModel() {
+class MainActivityViewModel : ViewModel() {
 
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -50,7 +50,6 @@ class MainActivityViewModel() : ViewModel() {
         firebaseAuth.signInAnonymously().addOnCompleteListener {
             if (it.isSuccessful) {
                 // Sign in success, update UI with the signed-in user's information
-                val user = firebaseAuth.currentUser
                 readApiKey()
             } else {
                 // If sign in fails, display a message to the user.

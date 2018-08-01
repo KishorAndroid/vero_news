@@ -4,9 +4,12 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_main.*
 
 /**
  * A artcles fragment containing a list of news articles.
@@ -14,6 +17,8 @@ import android.view.ViewGroup
 class ArticlesFragment : Fragment() {
 
     private var category : String? = null
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
 
     companion object {
         const val KEY_CATEGORY = "category"
@@ -32,9 +37,14 @@ class ArticlesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewManager = LinearLayoutManager(activity)
         val articlesFragmentViewModel = ViewModelProviders.of(this).get(ArticlesFragmentViewModel::class.java)
         articlesFragmentViewModel.result.observe(this, Observer {
-
+            viewAdapter = MyAdapter(it?.articles)
+            rvArticles.apply {
+                layoutManager = viewManager
+                adapter = viewAdapter
+            }
         })
         articlesFragmentViewModel.getNewsArticles(category)
     }

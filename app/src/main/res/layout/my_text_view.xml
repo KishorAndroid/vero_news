@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/verticalGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/imageNews"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@string/news_image_description"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/screen_background_dark_transparent"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:maxLines="2"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageNews" />
+
+        <TextView
+            android:id="@+id/textDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:maxLines="3"
+            android:paddingBottom="4dp"
+            android:paddingEnd="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/imageNews" />
+
+        <TextView
+            android:id="@+id/textSourceName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="bottom|start"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@id/verticalGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textDescription" />
+
+        <TextView
+            android:id="@+id/textDateTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="bottom|end"
+            android:maxLines="1"
+            android:padding="2dp"
+            android:paddingEnd="8dp"
+            android:paddingRight="8dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/verticalGuideline"
+            app:layout_constraintTop_toBottomOf="@id/textDescription" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
