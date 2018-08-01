@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        contentLoading.show()
         val mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
         mainActivityViewModel.apiKey.observe(this, Observer { _ ->
             showNews(mainActivityViewModel.apiKey.value)
@@ -52,10 +53,23 @@ class MainActivity : AppCompatActivity() {
 
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+
+        contentLoading.hide()
     }
 
+    //when you modify this function, you also make changes to getCategoryTitles()
     private fun getNewsCategories(): ArrayList<ArticlesFragment> {
         var newsCategories = ArrayList<ArticlesFragment>()
+
+        //Countries's Top Headlines
+        val articlesFragment = ArticlesFragment()
+        val bundle = Bundle()
+        bundle.putString(ArticlesFragment.KEY_CATEGORY, ArticlesFragment.TOP_HEADLINES)
+        articlesFragment.arguments = bundle
+        newsCategories.add(articlesFragment)
+
+
+        //predefined categories for specific country
         for (category in ArticlesFragment.INDIA_CATEGORIES) {
             val articlesFragment = ArticlesFragment()
             val bundle = Bundle()
@@ -68,6 +82,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCategoryTitles(): ArrayList<String> {
         var categoryTitles = ArrayList<String>()
+
+        //Countries's Top Headlines
+        categoryTitles.add(ArticlesFragment.TOP_HEADLINES)
+
+        //predefined categories for specific country
         for (category in ArticlesFragment.INDIA_CATEGORIES) {
             categoryTitles.add(category)
         }

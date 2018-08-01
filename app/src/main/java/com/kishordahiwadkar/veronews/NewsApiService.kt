@@ -10,7 +10,10 @@ import retrofit2.http.Query
 interface NewsApiService{
 
     @GET("top-headlines")
-    fun topHeadlines(@Query("country") country: String, @Query("category") category: String, @Query("apiKey") apiKey: String) : Observable<Result>
+    fun topCategoryHeadlines(@Query("country") country: String, @Query("category") category: String, @Query("apiKey") apiKey: String) : Observable<Result>
+
+    @GET("top-headlines")
+    fun topCountryHeadlines(@Query("country") country: String, @Query("apiKey") apiKey: String) : Observable<Result>
 
     companion object {
         fun create(): NewsApiService{

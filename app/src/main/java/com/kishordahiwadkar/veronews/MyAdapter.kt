@@ -1,5 +1,7 @@
 package com.kishordahiwadkar.veronews
 
+import android.content.Intent
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -31,11 +33,15 @@ class MyAdapter(private val myDataset: List<Article?>?) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        Glide.with(holder.view).load(myDataset?.get(position)?.urlToImage).into(holder.view.imageNews)
+        holder.view.imageNews.loadUrl(myDataset?.get(position)?.urlToImage)
         holder.view.textTitle.text = myDataset?.get(position)?.title
         holder.view.textDescription.text = myDataset?.get(position)?.description
         holder.view.textDateTime.text = myDataset?.get(position)?.publishedAt
         holder.view.textSourceName.text = myDataset?.get(position)?.source?.name
+        holder.view.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse(myDataset?.get(position)?.url))
+            holder.view.context.startActivity(intent)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

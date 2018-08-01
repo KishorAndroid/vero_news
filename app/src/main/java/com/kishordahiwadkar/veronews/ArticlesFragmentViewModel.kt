@@ -21,13 +21,32 @@ class ArticlesFragmentViewModel : ViewModel() {
 
     public fun getNewsArticles(category: String?) {
         Log.d("Article", category + " " + MainActivity.apiKey)
-        disposable = newsApiService.topHeadlines("in", category!!, MainActivity.apiKey!!)
+        when(category){
+            ArticlesFragment.TOP_HEADLINES -> {
+                getCountryHeadlines(category)
+            }
+            else -> {
+                getCategoryHeadlines(category)
+            }
+        }
+    }
+
+    private fun getCountryHeadlines(category: String?) {
+        disposable = newsApiService.topCountryHeadlines("in", MainActivity.apiKey!!)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    for (article in it.articles!!) {
-                        Log.d("Article", article?.title)
-                    }
+                    result.value = it
+                }, {
+                    Log.d("Article", it.message)
+                })
+    }
+
+    private fun getCategoryHeadlines(category: String?) {
+        disposable = newsApiService.topCategoryHeadlines("in", category!!, MainActivity.apiKey!!)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
                     result.value = it
                 }, {
                     Log.d("Article", it.message)

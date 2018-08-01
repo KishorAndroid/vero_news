@@ -22,6 +22,7 @@ class ArticlesFragment : Fragment() {
 
     companion object {
         const val KEY_CATEGORY = "category"
+        const val TOP_HEADLINES = "Headlines"
         val INDIA_CATEGORIES = mutableListOf("Business", "Entertainment", "Health", "Science", "Sports", "Technology")
     }
 
@@ -39,11 +40,13 @@ class ArticlesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewManager = LinearLayoutManager(activity)
         val articlesFragmentViewModel = ViewModelProviders.of(this).get(ArticlesFragmentViewModel::class.java)
+        contentLoading.show()
         articlesFragmentViewModel.result.observe(this, Observer {
             viewAdapter = MyAdapter(it?.articles)
             rvArticles.apply {
                 layoutManager = viewManager
                 adapter = viewAdapter
+                contentLoading.hide()
             }
         })
         articlesFragmentViewModel.getNewsArticles(category)
